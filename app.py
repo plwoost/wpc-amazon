@@ -29,11 +29,16 @@ def upload():
 
 @app.route("/request-album", methods=['POST'])
 def request_album_creation():
+  email = request.form['email']
+  photosCount = len(request.form)
+  urls = []
+  for index in range(0, photosCount-1):
+    key = 'photos_%s' % index
+    urls.append(request.form[key])
+
   album = {
-    'photos': [
-      'https://s3.eu-central-1.amazonaws.com/153412-kkanclerz/photos/009d30b3d9a143a5937fbab9a50a4009/empty_image.jpg',
-      'https://s3.eu-central-1.amazonaws.com/153412-kkanclerz/photos/009d30b3d9a143a5937fbab9a50a4009/empty_image.jpg'
-    ]
+    'sent_to': email,
+    'photos': urls
   }
   request_album(album)
   return jsonify()
